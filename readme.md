@@ -21,7 +21,7 @@ POST /api/v0/authenticate
 
 ### Second page: /user-info
 Use the token to fetch the user info and show the user info in a new page.
-The User information that we need to collect is described in the UserClient interface at `users.ts`
+The User information that we need to collect is described in the UserClient interface at [users.ts](https://github.com/Drixit/challenge/blob/master/users.ts)
 
 ```
 ENDPOINT: USER INFO

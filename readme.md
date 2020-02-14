@@ -56,7 +56,7 @@ Feel free to use any other helper library although ideally the more code you wri
 
 ### The process is as important as the final result, that's why we ask you to:
 - Keep (and share) a log of the most important decisions you made at the end of the exercise.
-- Deliver your solution as a github repository, with enough context and information so it can be analyzed/tested by our team.
+- Deliver your solution as a github repository with enough context and information so it can be analyzed/tested by our team.
 - Include everything that you consider relevant when you are about to send the results.
 
 

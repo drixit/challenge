@@ -1,6 +1,7 @@
 import jwt from 'fastify-jwt';
 import bcrypt from 'bcryptjs';
 import SECRET from '../secret';
+import { AUTHENTICATE, USER_INFO } from '../../endpoints';
 
 async function usersRoutes(fastify, _options) {
 	const users = fastify.mongo.db.collection('users');
@@ -11,7 +12,7 @@ async function usersRoutes(fastify, _options) {
     methods: ["POST"]
   });
 
-	fastify.post('/authenticate', async (req, reply) => {
+	fastify.post(AUTHENTICATE, async (req, reply) => {
 		const user = await users.findOne({ email: req.body.email });
 
 		if (user) {
@@ -31,7 +32,7 @@ async function usersRoutes(fastify, _options) {
 		}
 	});
 
-  fastify.get('/users/me', async (req, reply) => {
+  fastify.get(USER_INFO, async (req, reply) => {
 		const token = req.headers.authorization.split('Bearer ')[1];
 		const decoded = fastify.jwt.verify(token);
 

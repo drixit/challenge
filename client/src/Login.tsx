@@ -2,7 +2,7 @@ import axios from 'axios';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Login.css';
-import { SERVER_URL } from './urls';
+import { SERVER_URL, AUTHENTICATE, USER_INFO } from '../../endpoints';
 
 type FieldProps = {
 	type: string;
@@ -19,22 +19,21 @@ const Field = ({ type, changeHandler }: FieldProps) => {
 
 async function postCredentials(email: string, password: string) {
 	const data = {
-		email: "lucas.sg.07@outlook.com",
-		password: "supersecretpassword",
+		email: email,
+		password: password,
 	};
-	const res = await axios.post(SERVER_URL + '/authenticate', data)
+	const res = await axios.post(SERVER_URL + AUTHENTICATE, data)
 
 	return res.data.jwt;
 }
 async function getUserInfo(token: string) {
-	const res = await axios.get(SERVER_URL + '/users/me', {
+	const res = await axios.get(SERVER_URL + USER_INFO, {
 		headers: {
 			Authorization: 'Bearer ' + token
 		}
 	});
 	return res.data;
 }
-
 
 const Form = () => {
 	const [email, setEmail] = useState('');

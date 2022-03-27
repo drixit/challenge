@@ -1,12 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import Login from './Login';
+import UserInfo from './UserInfo';
+import * as urls from './urls';
 import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+		<BrowserRouter>
+			<Routes>
+				<Route path={urls.LOGIN_PATH} element={<Login />} />
+				<Route path={urls.USER_INFO_PATH} element={<UserInfo />} />
+				<Route path={urls.HOME_PATH} element={<Navigate to={urls.LOGIN_PATH} replace />} />
+				<Route path="*" element={<Navigate to={urls.HOME_PATH} replace />} />
+			</Routes>
+		</BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')
 );

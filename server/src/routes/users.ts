@@ -6,8 +6,12 @@ async function usersRoutes(fastify, _options) {
 	const users = fastify.mongo.db.collection('users');
 
 	fastify.register(jwt, { secret: SECRET });
+	fastify.register(require("fastify-cors"), {
+    origin: "*",
+    methods: ["POST"]
+  });
 
-	fastify.post('/login', async (req, reply) => {
+	fastify.post('/authenticate', async (req, reply) => {
 		const user = await users.findOne({ email: req.body.email });
 
 		if (user) {

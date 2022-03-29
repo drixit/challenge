@@ -44,7 +44,6 @@ async function usersRoutes(fastify, _options) {
 		if (decoded) {
 			const filter = { email: decoded.email };
 			const exclude = { projection: { password: 0 } };
-			// TODO: See if I can avoid using projection and get away with <ClientUser> instead
 			const user = await users.findOne(filter, exclude);
 
 			reply

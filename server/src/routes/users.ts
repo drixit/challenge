@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs';
 import { JWT_SECRET, COOKIE_SECRET } from '../secrets';
-import { AUTHENTICATE, USER_INFO } from '../endpoints';
+import { AUTHENTICATE, USER_INFO, NEW_USER } from '../endpoints';
 
 async function usersRoutes(fastify, _options) {
 	const users = fastify.mongo.db.collection('users');
@@ -67,7 +67,7 @@ async function usersRoutes(fastify, _options) {
 		}
   });
 
-	fastify.post('/users/register', (req, reply) => {
+	fastify.post(NEW_USER, (req, reply) => {
 		const newUser: ServerUser = req.body;
 		const passwordPlain = req.body.password;
 

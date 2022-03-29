@@ -1,5 +1,4 @@
 import axios from 'axios';
-// import { CookiesProvider, useCookies } from 'react-cookie';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Login.css';
@@ -87,7 +86,6 @@ const EmailForm = () => {
 	const [validFormat, setValidFormat] = useState(false);
 	const [showPasswordBtnClicked, setShowPasswordBtnClicked] = useState(false);
 	const [correctPassword, setCorrectPassword] = useState(false);
-	// const [cookies, setCookie] = useCookies();
 	const handleEmailChange = (event: ChangeEvent<HTMLInputElement>) => setEmail(event.target.value);
 	const handlePasswordChange = (event: ChangeEvent<HTMLInputElement>) => setPassword(event.target.value);
 	const navigate = useNavigate();
@@ -100,8 +98,6 @@ const EmailForm = () => {
 	
 			if (response.status === 200) {
 				setCorrectPassword(true);
-
-				console.log(response.headers);
 
 				const token = response.data.jwt;
 				const userInfo = await getUserInfo(token);
@@ -134,9 +130,7 @@ const EmailForm = () => {
 const Login = () => {
   return (
     <div className="Login">
-			{/* <CookiesProvider> */}
-				<EmailForm/>
-			{/* </CookiesProvider> */}
+			<EmailForm/>
     </div>
   );
 }

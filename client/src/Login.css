@@ -1,0 +1,22 @@
+.Login {
+	/* height: 100% */
+}
+
+input[type=email], input[type=password] {
+	background: transparent;
+	border: none;
+	border-bottom: 1px solid #000000;
+	outline: none;
+	width: 30vh;
+	font-size: 1.3em;
+	margin: 1em 0;
+}
+
+.container {
+	display: grid;
+	height: 100vh;
+	grid-template-columns: 20em;
+  align-items: center;
+  justify-items: center;
+	justify-content: center;
+}

@@ -1,15 +1,25 @@
-import jwt from 'fastify-jwt';
 import bcrypt from 'bcryptjs';
-import SECRET from '../secret';
+import { JWT_SECRET, COOKIE_SECRET } from '../secrets';
 import { AUTHENTICATE, USER_INFO } from '../endpoints';
 
 async function usersRoutes(fastify, _options) {
 	const users = fastify.mongo.db.collection('users');
 
-	fastify.register(jwt, { secret: SECRET });
+	fastify.register(require('fastify-jwt'), {
+		secret: JWT_SECRET,
+		cookie: {
+			cookieName: 'jwt',
+			signed: true
+		}
+	});
+	fastify.register(require('fastify-cookie'), {
+		secret: COOKIE_SECRET
+	});
 	fastify.register(require("fastify-cors"), {
-    origin: "*",
-    methods: ["POST"]
+    origin: true,
+    methods: ["POST", "GET"],
+		credentials: true,
+		exposedHeaders: ['set-cookie']
   });
 
 	fastify.post(AUTHENTICATE, async (req, reply) => {
@@ -28,7 +38,9 @@ async function usersRoutes(fastify, _options) {
 				} else {
 					const token = fastify.jwt.sign({ email: req.body.email });
 
-					reply.send({ 'jwt': token });
+					reply
+						.cookie('jwt', token)
+						.send({ 'jwt': token });
 				}
 			});
 		} else {

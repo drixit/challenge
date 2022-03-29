@@ -1,4 +1,5 @@
 import axios from 'axios';
+// import { CookiesProvider, useCookies } from 'react-cookie';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Login.css';
@@ -32,7 +33,7 @@ async function postCredentials(email: string, password: string) {
 		password: password,
 	};
 
-	return axios.post(SERVER_URL + AUTHENTICATE, data);
+	return axios.post(SERVER_URL + AUTHENTICATE, data, { withCredentials: true });
 }
 async function getUserInfo(token: string) {
 	const res = await axios.get(SERVER_URL + USER_INFO, {
@@ -86,6 +87,7 @@ const EmailForm = () => {
 	const [validFormat, setValidFormat] = useState(false);
 	const [showPasswordBtnClicked, setShowPasswordBtnClicked] = useState(false);
 	const [correctPassword, setCorrectPassword] = useState(false);
+	// const [cookies, setCookie] = useCookies();
 	const handleEmailChange = (event: ChangeEvent<HTMLInputElement>) => setEmail(event.target.value);
 	const handlePasswordChange = (event: ChangeEvent<HTMLInputElement>) => setPassword(event.target.value);
 	const navigate = useNavigate();
@@ -98,7 +100,9 @@ const EmailForm = () => {
 	
 			if (response.status === 200) {
 				setCorrectPassword(true);
-	
+
+				console.log(response.headers);
+
 				const token = response.data.jwt;
 				const userInfo = await getUserInfo(token);
 	
@@ -130,7 +134,9 @@ const EmailForm = () => {
 const Login = () => {
   return (
     <div className="Login">
-			<EmailForm/>
+			{/* <CookiesProvider> */}
+				<EmailForm/>
+			{/* </CookiesProvider> */}
     </div>
   );
 }

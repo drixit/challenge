@@ -51,20 +51,25 @@ async function usersRoutes(fastify, _options) {
 
   fastify.get(USER_INFO, async (req, reply) => {
 		const token = req.headers.authorization.split('Bearer ')[1];
-		const decoded = fastify.jwt.verify(token);
+		await fastify.jwt.verify(token, async (err, decoded) => {
+			if (err) fastify.log.error(err);
 
-		if (decoded) {
-			const filter = { email: decoded.email };
-			const exclude = { projection: { password: 0 } };
-			const user = await users.findOne(filter, exclude);
+			if (decoded) {
+				const filter = { email: decoded.email };
+				const exclude = { projection: { password: 0 } };
+				const user = await users.findOne(filter, exclude);
+	
+				reply
+					.header('Authorization', `Bearer ${token}`)
+					.send({ user: user });
+			} else {
+				reply
+					.code(401)
+					.header('WWW-Authenticate', 'Basic realm="Login"')
+					.send('Invalid JWT');
+			}
+		});
 
-			reply
-				.header('Authorization', `Bearer ${token}`)
-				.send({ user: user });
-		} else {
-			// TODO: Improve error handling
-			return 'Invalid credentials';
-		}
   });
 
 	fastify.post(NEW_USER, (req, reply) => {

@@ -4,7 +4,10 @@ import dbConnector from './db-connector';
 import usersRoutes from './routes/users';
 
 const fastify = Fastify({
-  logger: true
+  logger: {
+		level: 'info',
+		prettyPrint: true
+	}
 });
 fastify.register(dbConnector);
 fastify.register(usersRoutes, { prefix: API_PREFIX});

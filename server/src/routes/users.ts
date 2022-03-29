@@ -1,7 +1,7 @@
 import jwt from 'fastify-jwt';
 import bcrypt from 'bcryptjs';
 import SECRET from '../secret';
-import { AUTHENTICATE, USER_INFO } from '../../endpoints';
+import { AUTHENTICATE, USER_INFO } from '../endpoints';
 
 async function usersRoutes(fastify, _options) {
 	const users = fastify.mongo.db.collection('users');
@@ -16,10 +16,15 @@ async function usersRoutes(fastify, _options) {
 		const user = await users.findOne({ email: req.body.email });
 
 		if (user) {
-			bcrypt.compare(req.body.password, user.password, function(err, _res) {
+			bcrypt.compare(req.body.password, user.password, function(err, res) {
 				if (err) {
 					// TODO: Improve error handling
-					return 'Invalid password';
+					throw new Error('Could not compare passwords');
+				} else if (!res) {
+					reply
+						.code(401)
+						.header('WWW-Authenticate', 'Basic realm="Login"')
+						.send('Incorrect password');
 				} else {
 					const token = fastify.jwt.sign({ email: req.body.email });
 

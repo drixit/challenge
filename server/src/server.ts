@@ -1,5 +1,5 @@
 import Fastify from 'fastify';
-import { API_PREFIX, SERVER_PORT } from '../endpoints';
+import { API_PREFIX, SERVER_PORT } from './endpoints';
 import dbConnector from './db-connector';
 import usersRoutes from './routes/users';
 
